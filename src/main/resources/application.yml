@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:mong
+    username: mong
+    password:
+    driver-class-name: org.h2.Driver
+
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHb11
