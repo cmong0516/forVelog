@@ -53,11 +53,12 @@ public class MemberService {
     @Transactional
     public LoginMemberResponse updateMember(HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("Authorization");
-        String getToken = token.split(" ")[1].trim();
+        String getToken = token.replace("Bearer ", "");
 
         String memberEmail = jwtProvider.getMember(getToken);
 
-        Member member = memberJpaRepository.findByEmail(memberEmail).orElseThrow(RuntimeException::new);
+        Member member = memberJpaRepository.findByEmail(memberEmail)
+                .orElseThrow(() -> new UsernameNotFoundException(memberEmail + " 유저를 찾을수 없습니다."));
 
         Set<Authority> roles = new HashSet<>();
 
