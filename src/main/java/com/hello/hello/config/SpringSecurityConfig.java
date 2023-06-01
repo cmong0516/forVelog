@@ -41,7 +41,7 @@ public class SpringSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member","/h2-console/**")
+                .antMatchers("/member","/h2-console/**","/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

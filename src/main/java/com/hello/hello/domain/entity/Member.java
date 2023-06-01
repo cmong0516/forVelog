@@ -13,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,5 +45,9 @@ public class Member {
         this.email = email;
         this.name = name;
         this.password = password;
+    }
+
+    public void addRole(Set<Authority> roles) {
+        this.roles = roles;
     }
 }
