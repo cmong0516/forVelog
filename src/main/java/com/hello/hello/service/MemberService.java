@@ -7,6 +7,7 @@ import com.hello.hello.domain.dto.response.LoginMemberResponse;
 import com.hello.hello.domain.entity.Member;
 import com.hello.hello.repository.MemberJpaRepository;
 import com.hello.hello.utils.JwtProvider;
+import io.jsonwebtoken.ExpiredJwtException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +52,10 @@ public class MemberService {
 
     @Transactional
     public LoginMemberResponse updateMember(HttpServletRequest httpServletRequest) {
-        String resolveToken = jwtProvider.resolveToken(httpServletRequest);
-        String memberEmail = jwtProvider.getMember(resolveToken);
+        String token = httpServletRequest.getHeader("Authorization");
+        String getToken = token.split(" ")[1].trim();
+
+        String memberEmail = jwtProvider.getMember(getToken);
 
         Member member = memberJpaRepository.findByEmail(memberEmail).orElseThrow(RuntimeException::new);
 
@@ -63,7 +66,10 @@ public class MemberService {
 
         member.addRole(roles);
 
-        return LoginMemberResponse.builder().email(member.getEmail()).name(member.getName()).roles(member.getRoles()).build();
+        String newToken = jwtProvider.createToken(memberEmail, member.getRoles());
+
+        return LoginMemberResponse.builder().email(member.getEmail()).name(member.getName()).roles(member.getRoles())
+                .token(newToken).build();
     }
 
     public void deleteMember(Long id) {
@@ -74,16 +80,32 @@ public class MemberService {
         return memberJpaRepository.findAll();
     }
 
-    public LoginMemberResponse login(LoginMemberRequest loginMemberRequest) {
-        Member member = memberJpaRepository.findByEmail(loginMemberRequest.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("로그인 정보가 일치하지 않습니다."));
+    public LoginMemberResponse login(LoginMemberRequest loginMemberRequest, HttpServletRequest httpServletRequest) {
 
-        if (!passwordEncoder.matches(loginMemberRequest.getPassword(),member.getPassword())) {
-            throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+
+            String token = httpServletRequest.getHeader("Authorization");
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring("Bearer ".length()).trim();
+            String memberEmail = jwtProvider.getMember(token);
+            Member member = memberJpaRepository.findByEmail(memberEmail)
+                    .orElseThrow(() -> new RuntimeException("토큰 정보가 올바르지 않습니다."));
+
+            return LoginMemberResponse.builder().email(member.getEmail()).name(member.getName()).token(token)
+                    .roles(member.getRoles()).build();
+        } else {
+            Member member = memberJpaRepository.findByEmail(loginMemberRequest.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("로그인 정보가 일치하지 않습니다."));
+
+            if (!passwordEncoder.matches(loginMemberRequest.getPassword(), member.getPassword())) {
+                throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+            }
+
+            String createToken = jwtProvider.createToken(member.getEmail(), member.getRoles());
+
+            return LoginMemberResponse.builder().email(member.getEmail()).name(member.getName()).token(createToken)
+                    .roles(member.getRoles()).build();
         }
 
-        String token = jwtProvider.createToken(member.getEmail(), member.getRoles());
-
-        return LoginMemberResponse.builder().email(member.getEmail()).name(member.getName()).token(token).roles(member.getRoles()).build();
     }
 }

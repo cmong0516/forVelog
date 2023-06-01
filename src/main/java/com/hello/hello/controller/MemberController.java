@@ -33,8 +33,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public LoginMemberResponse login(@RequestBody @Valid LoginMemberRequest loginMemberRequest) {
-        return memberService.login(loginMemberRequest);
+    public LoginMemberResponse login(@RequestBody(required = false) @Valid LoginMemberRequest loginMemberRequest,HttpServletRequest httpServletRequest) {
+        return memberService.login(loginMemberRequest,httpServletRequest);
     }
 
     @PutMapping("/member")
