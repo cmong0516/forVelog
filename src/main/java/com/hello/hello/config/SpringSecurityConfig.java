@@ -43,6 +43,8 @@ public class SpringSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/member","/h2-console/**","/login")
                 .permitAll()
+                .antMatchers("/post/**")
+                .hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()

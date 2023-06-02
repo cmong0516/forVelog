@@ -1,6 +1,7 @@
 package com.hello.hello.domain.entity;
 
 import com.hello.hello.domain.Authority;
+import com.hello.hello.domain.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
