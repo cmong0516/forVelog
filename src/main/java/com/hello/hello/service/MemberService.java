@@ -83,8 +83,7 @@ public class MemberService {
 
     public LoginMemberResponse login(LoginMemberRequest loginMemberRequest, HttpServletRequest httpServletRequest) {
 
-
-            String token = httpServletRequest.getHeader("Authorization");
+        String token = httpServletRequest.getHeader("Authorization");
 
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring("Bearer ".length()).trim();
