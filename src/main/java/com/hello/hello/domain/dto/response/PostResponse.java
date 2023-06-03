@@ -1,5 +1,6 @@
 package com.hello.hello.domain.dto.response;
 
+import com.hello.hello.domain.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +16,11 @@ public class PostResponse {
     private String title;
     private String content;
     private String author;
+
+    public PostResponse(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.author = post.getMember().getEmail();
+    }
 }

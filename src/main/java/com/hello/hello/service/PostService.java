@@ -47,4 +47,9 @@ public class PostService {
                 .collect(
                         Collectors.toList());
     }
+
+    public PostResponse findOne(Long id) {
+
+        return new PostResponse(postJpaRepository.findById(id).orElseThrow(RuntimeException::new));
+    }
 }
