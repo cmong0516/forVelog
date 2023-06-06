@@ -49,7 +49,7 @@ public class InitService {
 
     public void postInit() {
         for (int i = 0; i < 3; i++) {
-            postJpaRepository.save(Post.builder().title("title"+i).content("content")
+            postJpaRepository.save(Post.builder().title("title"+i).content("content"+i)
                     .member(memberJpaRepository.findByEmail("test"+i+"@gmail.com")
                             .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을수 없습니다.")))
                     .build());
