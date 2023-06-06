@@ -4,12 +4,12 @@ import com.hello.hello.domain.dto.request.NewPostRequest;
 import com.hello.hello.domain.dto.response.PostResponse;
 import com.hello.hello.domain.entity.Member;
 import com.hello.hello.domain.entity.Post;
+import com.hello.hello.repository.CustomPostRepositoryImpl;
 import com.hello.hello.repository.MemberJpaRepository;
 import com.hello.hello.repository.PostJpaRepository;
 import com.hello.hello.utils.JwtProvider;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +21,7 @@ public class PostService {
     private final PostJpaRepository postJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
     private final JwtProvider jwtProvider;
+    private final CustomPostRepositoryImpl customMemberRepository;
 
     public Long save(NewPostRequest newPostRequest, HttpServletRequest httpServletRequest) {
 
@@ -49,7 +50,12 @@ public class PostService {
     }
 
     public PostResponse findOne(Long id) {
-
         return new PostResponse(postJpaRepository.findById(id).orElseThrow(RuntimeException::new));
+    }
+
+    public List<PostResponse> findPostsByTitleAndContent(String title,String content) {
+        List<Post> postsByTitleAndContent = customMemberRepository.findPostsByTitleAndContent(title, content);
+
+        return postsByTitleAndContent.stream().map(PostResponse::new).collect(Collectors.toList());
     }
 }

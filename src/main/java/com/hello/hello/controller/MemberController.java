@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +25,15 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberJpaRepository memberJpaRepository;
 
-    @PostMapping("/member")
-    public Long save(@RequestBody @Valid SignUpDto signUpDto) {
+    @PostMapping("/members")
+    public ResponseEntity<Long> createMember(@RequestBody @Valid SignUpDto signUpDto) {
         if (memberJpaRepository.findByEmail(signUpDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 회원 입니다.");
         }
 
-        return memberService.saveMember(signUpDto);
+        Long memberId = memberService.saveMember(signUpDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
     }
 
     @PostMapping("/login")
@@ -37,14 +41,16 @@ public class MemberController {
         return memberService.login(loginMemberRequest,httpServletRequest);
     }
 
-    @PutMapping("/member")
+    @PutMapping("/members")
     public LoginMemberResponse updateMember(HttpServletRequest httpServletRequest) {
 
         return memberService.updateMember(httpServletRequest);
     }
 
-    @DeleteMapping("/member/{id}")
-    public void deleteMember(@PathVariable Long id) {
+    @DeleteMapping("/members/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
