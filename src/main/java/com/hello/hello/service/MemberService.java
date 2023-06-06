@@ -5,9 +5,9 @@ import com.hello.hello.domain.dto.request.LoginMemberRequest;
 import com.hello.hello.domain.dto.request.SignUpDto;
 import com.hello.hello.domain.dto.response.LoginMemberResponse;
 import com.hello.hello.domain.entity.Member;
+import com.hello.hello.repository.CustomMemberRepository;
 import com.hello.hello.repository.MemberJpaRepository;
 import com.hello.hello.utils.JwtProvider;
-import io.jsonwebtoken.ExpiredJwtException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +27,7 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final CustomMemberRepository customMemberRepository;
 
 
     public Long saveMember(SignUpDto signUpDto) {
