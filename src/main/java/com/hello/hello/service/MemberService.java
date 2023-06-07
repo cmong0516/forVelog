@@ -3,6 +3,7 @@ package com.hello.hello.service;
 import com.hello.hello.domain.Authority;
 import com.hello.hello.domain.dto.request.LoginMemberRequest;
 import com.hello.hello.domain.dto.request.SignUpDto;
+import com.hello.hello.domain.dto.request.UpdateMemberRequest;
 import com.hello.hello.domain.dto.response.LoginMemberResponse;
 import com.hello.hello.domain.entity.Member;
 import com.hello.hello.repository.CustomPostRepositoryImpl;
@@ -52,7 +53,7 @@ public class MemberService {
 
 
     @Transactional
-    public LoginMemberResponse updateMember(HttpServletRequest httpServletRequest) {
+    public LoginMemberResponse updateMember(UpdateMemberRequest updateMemberRequest,HttpServletRequest httpServletRequest) {
         String token = httpServletRequest.getHeader("Authorization");
         String getToken = token.replace("Bearer ", "");
 
@@ -62,6 +63,9 @@ public class MemberService {
                 .orElseThrow(() -> new UsernameNotFoundException(memberEmail + " 유저를 찾을수 없습니다."));
 
         Set<Authority> roles = new HashSet<>();
+
+        member.updateMember(updateMemberRequest.getEmail(), updateMemberRequest.getName(),
+                updateMemberRequest.getPassword());
 
         roles.add(Authority.ROLE_GUEST);
         roles.add(Authority.ROLE_USER);

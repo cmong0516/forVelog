@@ -2,6 +2,7 @@ package com.hello.hello.controller;
 
 import com.hello.hello.domain.dto.request.LoginMemberRequest;
 import com.hello.hello.domain.dto.request.SignUpDto;
+import com.hello.hello.domain.dto.request.UpdateMemberRequest;
 import com.hello.hello.domain.dto.response.LoginMemberResponse;
 import com.hello.hello.repository.MemberJpaRepository;
 import com.hello.hello.service.MemberService;
@@ -42,9 +43,9 @@ public class MemberController {
     }
 
     @PutMapping("/members")
-    public LoginMemberResponse updateMember(HttpServletRequest httpServletRequest) {
+    public LoginMemberResponse updateMember(@RequestBody(required = false) UpdateMemberRequest updateMemberRequest, HttpServletRequest httpServletRequest) {
 
-        return memberService.updateMember(httpServletRequest);
+        return memberService.updateMember(updateMemberRequest,httpServletRequest);
     }
 
     @DeleteMapping("/members/{id}")
