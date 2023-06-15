@@ -2,6 +2,7 @@ package com.hello.hello.domain.entity;
 
 import com.hello.hello.domain.Authority;
 import com.hello.hello.domain.BaseTimeEntity;
+import com.querydsl.core.annotations.QueryEntity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

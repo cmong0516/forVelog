@@ -1,5 +1,6 @@
 package com.hello.hello.repository;
 
+
 import static com.hello.hello.domain.entity.QPost.post;
 
 import com.hello.hello.domain.entity.Post;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public class CustomPostRepositoryImpl implements CustomPostRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
+
+
 
 
     public List<Post> findPostsByTitleAndContent(String title, String content) {

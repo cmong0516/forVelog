@@ -6,6 +6,7 @@ import com.hello.hello.domain.dto.request.SignUpDto;
 import com.hello.hello.domain.dto.request.UpdateMemberRequest;
 import com.hello.hello.domain.dto.response.LoginMemberResponse;
 import com.hello.hello.domain.entity.Member;
+import com.hello.hello.repository.CustomMemberRepository;
 import com.hello.hello.repository.CustomPostRepositoryImpl;
 import com.hello.hello.repository.MemberJpaRepository;
 import com.hello.hello.utils.JwtProvider;
@@ -28,7 +29,7 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final CustomPostRepositoryImpl customMemberRepository;
+    private final CustomMemberRepository customMemberRepository;
 
 
     public Long saveMember(SignUpDto signUpDto) {
@@ -113,4 +114,10 @@ public class MemberService {
         }
 
     }
+
+    public Long save() {
+        return customMemberRepository.save();
+    }
+
+
 }

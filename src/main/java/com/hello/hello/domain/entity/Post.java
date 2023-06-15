@@ -1,6 +1,7 @@
 package com.hello.hello.domain.entity;
 
 import com.hello.hello.domain.BaseTimeEntity;
+import com.querydsl.core.annotations.QueryEntity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
