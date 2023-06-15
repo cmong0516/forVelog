@@ -115,9 +115,5 @@ public class MemberService {
 
     }
 
-    public Long save() {
-        return customMemberRepository.save();
-    }
-
 
 }

@@ -56,9 +56,4 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("test")
-    public Long save() {
-        return memberService.save();
-    }
-
 }
