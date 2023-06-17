@@ -15,6 +15,7 @@ public class OAuth2Controller {
         OAuth2User oAuth2User = authentication.getPrincipal();
 
         System.out.println("oAuth2User.toString() = " + oAuth2User.toString());
+        System.out.println("oAuth2User.getName() = " + oAuth2User.getName());
 
     }
 
