@@ -23,14 +23,12 @@ spring:
       client:
         registration:
           google:
-            client-secret: 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
             client-id: 730268131510-pptkovf90i55a79mf9o4te30mdq5qssv.apps.googleusercontent.com
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-secret: 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
             scope:
-              - openid
               - email
               - profile
-            autorization-grant-type: authrization_code
+
 
 
 
