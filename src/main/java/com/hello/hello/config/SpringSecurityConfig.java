@@ -1,5 +1,6 @@
 package com.hello.hello.config;
 
+import com.hello.hello.oauth.CustomOAuth2UserService;
 import com.hello.hello.utils.JwtAuthenticationFilter;
 import com.hello.hello.utils.JwtProvider;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,7 +43,7 @@ public class SpringSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers("/**","/","/index.html")
 //                .antMatchers("/member","/h2-console/**","/login")
                 .permitAll()
 //                .antMatchers("/post/**")
@@ -71,7 +73,16 @@ public class SpringSecurityConfig {
                         response.setContentType("text/html; charset=UTF-8");
                         response.getWriter().write("인증되지 않은 사용자입니다.");
                     }
-                });
+                })
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error")
+        ;
 
         return http.build();
 
