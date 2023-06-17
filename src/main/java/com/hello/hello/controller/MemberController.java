@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,14 +40,16 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public LoginMemberResponse login(@RequestBody(required = false) @Valid LoginMemberRequest loginMemberRequest,HttpServletRequest httpServletRequest) {
-        return memberService.login(loginMemberRequest,httpServletRequest);
+    public LoginMemberResponse login(@RequestBody(required = false) @Valid LoginMemberRequest loginMemberRequest,
+                                     HttpServletRequest httpServletRequest) {
+        return memberService.login(loginMemberRequest, httpServletRequest);
     }
 
     @PutMapping("/members")
-    public LoginMemberResponse updateMember(@RequestBody(required = false) UpdateMemberRequest updateMemberRequest, HttpServletRequest httpServletRequest) {
+    public LoginMemberResponse updateMember(@RequestBody(required = false) UpdateMemberRequest updateMemberRequest,
+                                            HttpServletRequest httpServletRequest) {
 
-        return memberService.updateMember(updateMemberRequest,httpServletRequest);
+        return memberService.updateMember(updateMemberRequest, httpServletRequest);
     }
 
     @DeleteMapping("/members/{id}")

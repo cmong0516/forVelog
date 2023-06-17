@@ -47,7 +47,7 @@ public class SpringSecurityConfig {
 //                .antMatchers("/post/**")
 //                .hasRole("USER")
                 .anyRequest()
-                .authenticated()
+                .permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
