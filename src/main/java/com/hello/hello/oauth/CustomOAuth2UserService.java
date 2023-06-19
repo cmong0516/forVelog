@@ -3,15 +3,18 @@ package com.hello.hello.oauth;
 import com.hello.hello.domain.Authority;
 import com.hello.hello.domain.entity.Member;
 import com.hello.hello.repository.MemberJpaRepository;
-import com.hello.hello.utils.JwtProvider;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +37,27 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
-        Set<Authority> roles = new HashSet<>();
-        roles.add(Authority.ROLE_GUEST);
-        roles.add(Authority.ROLE_USER);
 
-        Member member = Member.builder().email(email).name(name).roles(roles).build();
+        Optional<Member> byEmail = memberJpaRepository.findByEmail(email);
 
-        memberJpaRepository.save(member);
+        if (byEmail.isPresent()) {
+
+            Member member = byEmail.get();
+
+            return new DefaultOAuth2User(
+                    Collections.singleton(new SimpleGrantedAuthority(member.getRoles().toString())),
+                    attributes,
+                    userNameAttributeName
+            );
+        } else {
+            Set<Authority> roles = new HashSet<>();
+            roles.add(Authority.ROLE_GUEST);
+            roles.add(Authority.ROLE_USER);
+
+            Member member = Member.builder().email(email).name(name).roles(roles).build();
+
+            memberJpaRepository.save(member);
+        }
 
         return oAuth2User;
     }

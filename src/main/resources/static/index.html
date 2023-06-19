@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>OAuth2 Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 추가적인 스타일링을 적용할 수 있습니다. */
+        body {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>OAuth2 Login</h1>
-<a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+<div class="container">
+    <h1>OAuth2 Login</h1>
+    <a href="/oauth2/authorization/google" class="btn btn-primary">Google 로그인</a>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
