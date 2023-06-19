@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberJpaRepository memberJpaRepository;
-    private final JwtProvider jwtProvider;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -37,14 +36,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String name = (String) attributes.get("name");
         Set<Authority> roles = new HashSet<>();
         roles.add(Authority.ROLE_GUEST);
+        roles.add(Authority.ROLE_USER);
 
         Member member = Member.builder().email(email).name(name).roles(roles).build();
 
         memberJpaRepository.save(member);
-
-        String token = jwtProvider.createToken(email, roles);
-
-        System.out.println("token = " + token);
 
         return oAuth2User;
     }
